@@ -35,9 +35,8 @@ var
   Page: TWizardPage;
   LabelHello: TLabel;
 begin
-  Page := CreateCustomPage(wpWelcome, 'Bienvenu HELLO WORLD');
+  Page := CreateCustomPage(wpWelcome, 'Bienvenu HELLO WORLD','Hello Wooorld');
   
-  // Créer un label avec "HELLO WORLD"
   LabelHello := TLabel.Create(WizardForm);
   LabelHello.Parent := Page.Surface;
   LabelHello.Left := 20;
