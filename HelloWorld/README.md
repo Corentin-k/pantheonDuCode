@@ -26,12 +26,12 @@ Compiler le code :
 
 Ouvrez le fichier HelloWorld.iss dans InnoSetup
 
-Compilez le projet pour générer le fichier HelloWorld.exe.
+Compilez le projet pour générer le fichier HelloWorldInstallateur.exe.
 
 Installation :
 
-Exécutez HelloWorld.exe pour installer l'application.
+Exécutez HelloWorldInstallateur.exe pour installer l'application.
 
 Exécution :
 
-Une fois passer l'instalateur, une app a été créé lancé là ! ( y a rien, y aura juste écrit Helloworld
+Une fois passer l'instalateur, une app a été créé lancé là ! ( y a rien, y aura juste écrit Helloworld en c++)
