@@ -1,9 +1,15 @@
 Projet Hello World
+---
 
 Pensez à bien modifier :
 
-OutputDir : OutputDir = Chemin vers le dossier où vous souhaitez que l'installateur soit créé.
-Source : Chemin vers le fichier exécutable HelloWorld.exe
+- OutputDir : OutputDir = Chemin vers le dossier où vous souhaitez que l'installateur soit créé.
+
+- Source : Chemin vers le fichier exécutable HelloWorld.exe
+
+---
+
+( le fichier HelloWorldInstallateur.exe est le résultat du code .iss)
 
 C'est écrit en InnoSetup (basé sur du Pascal) et C++. C'est un installateur d'app .
 
