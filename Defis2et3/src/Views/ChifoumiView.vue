@@ -1,7 +1,7 @@
 <script setup>
 
 import chifoumi from "../components/chifoumi.vue";
-import Stat from "../components/Stat.vue";
+import Stat from "../components/StatChifoumi.vue";
 
 </script>
 

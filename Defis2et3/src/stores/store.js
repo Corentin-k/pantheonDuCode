@@ -5,22 +5,34 @@ export const useCounterStore = defineStore('counter', {
         victory: 0,
         loser: 0,
         tie: 0,
+        tabPlusouMoins:[],
+        partyId: 1
     }),
     actions: {
         win() {
             this.victory++;
         },
         lose() {
-            this.loser++;  // Corrigé pour incrémenter le compteur de défaites
+            this.loser++;
         },
         egality() {
             this.tie++;
+        },
+        addParty(attemptCount) {
+            this.tabPlusouMoins.push({
+                id: this.partyId,
+                attempts: attemptCount
+            });
+            this.partyId++;
         },
         resetScores() {
             this.victory = 0;
             this.loser = 0;
             this.tie = 0;
-        }
+            this.tabPlusouMoins = [];
+            this.partyId = 1;
+        },
+
     },
     getters: {
         totalGames(state) {
@@ -37,6 +49,9 @@ export const useCounterStore = defineStore('counter', {
         tieRate(state) {
             const total = state.victory + state.loser + state.tie;
             return total > 0 ? (state.tie / total) * 100 : 0;
+        },
+        getAllParties(state) {
+            return state.tabPlusouMoins;
         }
     }
 });
