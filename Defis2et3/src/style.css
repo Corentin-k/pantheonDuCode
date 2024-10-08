@@ -1,0 +1,76 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark !important;
+  color: rgba(255, 255, 255, 0.87) !important;
+  background-color: #242424 !important;
+
+  font-synthesis: none !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+a {
+  font-weight: 500  !important;
+  color: #646cff !important;
+  text-decoration: inherit!important;
+}
+a:hover {
+  color: #535bf2 !important;
+}
+
+body {
+  margin: 0 !important;
+  display: flex !important;
+  place-items: center !important;
+
+  min-height: 100vh !important;
+}
+
+h1 {
+  font-size: 3.2em !important;
+  line-height: 1.1 !important;
+}
+
+button {
+  border-radius: 8px !important;
+  border: 1px solid transparent !important;
+  padding: 0.6em 1.2em !important;
+  font-size: 1em !important;
+  font-weight: 500 !important;
+  font-family: inherit !important;
+  background-color: #1a1a1a ;
+  cursor: pointer !important;
+  transition: border-color 0.25s !important;
+}
+button:hover {
+  border-color: #646cff !important;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color !important;
+}
+
+
+#app {
+  max-width: 1280px !important;
+  margin: 0 auto !important;
+  padding: 2rem !important;
+  text-align: center !important;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547 !important;
+    background-color: #ffffff !important;
+  }
+  a:hover {
+    color: #747bff !important;
+  }
+  button {
+    background-color: #f9f9f9 !important;
+  }
+}
