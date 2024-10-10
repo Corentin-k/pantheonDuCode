@@ -5,7 +5,7 @@
 
 - Cloner le repo
 
-- Installer Node.js
+- Installer [Node.js](https://nodejs.org/fr/download/package-manager)
 
 - Aller dans le fichier Defis2et3
 
