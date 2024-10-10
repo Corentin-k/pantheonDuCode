@@ -3,6 +3,15 @@
 
 # installation 
 
+- Cloner le repo
+
+- Installer Node.js
+
+- Aller dans le fichier Defis2et3
+
+- Click droit --> Ouvrir le dossier dans un terminal
+
+
 ```bash
 npm i
 ```
