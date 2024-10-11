@@ -1,74 +1,99 @@
 <template class="home">
-  <div id="oneP">
-  <img src="./assets/logo.png" style="width:150px" alt="logo 1P">
-  <h1>Panthéon du Code</h1>
+  <div id="oneP" v-if="currentGame !== 'gamelife' && currentGameIndex.value !== 2">
+    <img src="./assets/logo.png" style="width:150px" alt="logo 1P">
+    <h1>Panthéon du Code</h1>
   </div>
-  <button
-      id="chifoumi"
-      :disabled="isChifoumiActive"
-      @click="goToChifoumis"
-  >⬅️ Chifoumi</button>
 
-  <button
-      id="plusoumoins"
-      :disabled="isPlusOuMoinsActive"
-      @click="goToPlusOuMoins"
-  >Plus ou Moins ➡️</button>
+  <button id="prevButton" @click="prevGame" :disabled="currentGame === 'chifoumi'">⬅️ Précédent</button>
+  <button id="nextButton" @click="nextGame" :disabled="currentGame === 'gamelife'">Suivant ➡️</button>
 
   <router-view></router-view>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import router from "./router/router.js";
+import { computed, ref } from 'vue';
+import { onBeforeMount } from 'vue';
+import router from './router/router.js'; // Importer le router
 
-const isChifoumiActive = ref(true);
-const isPlusOuMoinsActive = ref(false);
+const games = ['chifoumi', 'plusoumoins', 'gamelife']; // Liste des jeux
+const currentGameIndex = ref(0); // Index du jeu courant
+const currentGame = computed(() => games[currentGameIndex.value]);
 
-function goToPlusOuMoins() {
-  router.push("/plusoumoins");
-  isChifoumiActive.value = false;
-  isPlusOuMoinsActive.value = true;
+function nextGame() {
+  if (currentGameIndex.value < games.length - 1) {
+    currentGameIndex.value++;
+    router.push(`/${currentGame.value}`); // Redirige vers la route du jeu suivant
+  }
 }
 
-function goToChifoumis() {
-  router.push("/chifoumi");
-  isChifoumiActive.value = true;
-  isPlusOuMoinsActive.value = false;
+function prevGame() {
+  if (currentGameIndex.value > 0) {
+    currentGameIndex.value--;
+    router.push(`/${currentGame.value}`); // Redirige vers la route du jeu précédent
+  }
 }
+
+
+router.afterEach((to) => {
+  const currentRouteName = to.name; // Récupère le nom de la route actuelle
+  console.log("Route actuelle:", currentRouteName);
+
+  if (currentRouteName) {
+    const gameIndex = games.indexOf(currentRouteName);
+    console.log("Index du jeu:", gameIndex);
+
+    if (gameIndex !== -1) {
+      currentGameIndex.value = gameIndex;
+    }
+  }
+});
+
+
+onBeforeMount(() => {
+  const currentRouteName = router.currentRoute.value.name;
+  if (currentRouteName) {
+    const gameIndex = games.indexOf(currentRouteName);
+    if (gameIndex !== -1) {
+      currentGameIndex.value = gameIndex;
+    }
+  }
+});
 </script>
 
 <style scoped>
-#oneP{
+#oneP {
   position: absolute;
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
 }
+
 h1 {
   color: rgb(67, 146, 178) !important;
-  font-family: Poppins,sans-serif;
+  font-family: Poppins, sans-serif;
 }
+
 button {
   margin: 10px;
   padding: 10px;
   font-size: 18px;
 }
 
-#plusoumoins,#chifoumi{
+#nextButton, #prevButton {
   width: 200px;
 }
-#plusoumoins {
+
+#nextButton {
   position: absolute;
   bottom: 50%;
   right: 0;
   transform: translateX(-50%);
 }
 
-#chifoumi {
+#prevButton {
   position: absolute;
   bottom: 50%;
-  left:0;
+  left: 0;
   transform: translateX(50%);
 }
 
@@ -78,21 +103,18 @@ button:disabled {
 }
 
 @media screen and (max-width: 990px) {
-  #chifoumi, #plusoumoins {
+  #nextButton, #prevButton {
     position: absolute;
     bottom: 25%;
     transform: translateX(0);
-
-
   }
 
-  #chifoumi {
+  #prevButton {
     left: 0;
   }
 
-  #plusoumoins {
+  #nextButton {
     right: 0;
   }
 }
-
 </style>
