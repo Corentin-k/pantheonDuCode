@@ -3,6 +3,15 @@
 
 # installation 
 
+- Cloner le repo
+
+- Installer [Node.js](https://nodejs.org/fr/download/package-manager)
+
+- Aller dans le fichier [Defis2et3](https://github.com/Corentin-k/pantheonDuCode/archive/refs/heads/main.zip)
+
+- Click droit --> Ouvrir le dossier dans un terminal
+
+
 ```bash
 npm i
 ```
