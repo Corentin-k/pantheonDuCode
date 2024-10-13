@@ -112,7 +112,6 @@ public class Hangman {
 
     public static void clearTerminal() {
         try {
-            // Vérifie le système d'exploitation
             if (System.getProperty("os.name").toLowerCase().contains("win")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } else {
@@ -144,7 +143,7 @@ public class Hangman {
         };
     };
     public static void displayGuessedWord() {
-        System.out.print(messages.getString("enter_word") + ": ");
+
         for (int i = 0; i < sansAccentwordToFind.length(); i++) {
             if (guessedWord.charAt(i) == '_') {
                 System.out.print("_ ");
@@ -236,9 +235,10 @@ public class Hangman {
             String userInput = sc.nextLine().toLowerCase();
 
 
-            userInput = removeAccents(userInput);
+            userInput = removeAccents(userInput).toLowerCase();
 
             if (userInput.length() != 1 || !correctEntry(userInput)) {
+
                 if (userInput.equals("see")) {
                     if (letterAlreadyUsed.isEmpty()) {
                         System.out.println(messages.getString("no_letters_used"));
@@ -246,11 +246,13 @@ public class Hangman {
                         System.out.println(messages.getString("allLetters"));
                         System.out.println(letterAlreadyUsed);
                     }
-                    continue;
+                    System.out.println(messages.getString("enter_letter"));
+                    System.out.print(">>>");
+                    userInput = sc.nextLine().toLowerCase();
                 }
-
+                else{
                 System.out.println(messages.getString("invalid_input"));
-                continue;
+                continue;}
             }
 
             letterAlreadyUsed.add(userInput.charAt(0));
