@@ -12,3 +12,7 @@ Pour lancer le jeu ( dans un terminal windows ou autre mais pas celui de intelli
 javac Hangman.java
 java Hangman
 ```
+# Information
+
+Si des points d'interrogation apparaissent celasignifie que votre terminal ne prend pas 
+en charge les caractères spéciaux Unicode.

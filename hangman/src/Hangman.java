@@ -170,6 +170,7 @@ public class Hangman {
         }
         return false;
     }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -209,8 +210,8 @@ public class Hangman {
             System.out.println(messages.getString("enter_word"));
             System.out.print(">>>");
             sansAccentwordToFind = sc.nextLine(); // Récupérer le mot original
-            if (sansAccentwordToFind.equals("1")){
-                sansAccentwordToFind=getRamdomword(langChoice);
+            if (sansAccentwordToFind.equals("1")) {
+                sansAccentwordToFind = getRamdomword(langChoice);
                 break;
             }
         } while (!correctEntry(sansAccentwordToFind));
@@ -247,9 +248,7 @@ public class Hangman {
                     System.out.print(">>>");
                     userInput = sc.nextLine().toLowerCase();
                 }
-                else{
-                System.out.println(messages.getString("invalid_input"));
-                continue;}
+                else   continue;
             }
 
             letterAlreadyUsed.add(userInput.charAt(0));
@@ -272,10 +271,21 @@ public class Hangman {
         }
 
         if (life <= 0) {
-            System.out.println(messages.getString("lose_message") +" "+ sansAccentwordToFind); // Afficher le mot original
-        }
+            System.out.println(messages.getString("lose_message") + " " + sansAccentwordToFind); // Afficher le mot original
+            System.out.println("---------------------");
+            System.out.println(messages.getString("restart"));
+            String restart = sc.nextLine().toLowerCase();
+            if (restart.equals("o") || restart.equals("oui") || restart.equals("yes") || restart.equals("si")|| restart.equals("y")) {
+                {
+                    life = maxLife;
+                    clearTerminal();
+                    main(args);
+                }
 
-        sc.close();
+            }
+
+            sc.close();
+        }
     }
 
 }
