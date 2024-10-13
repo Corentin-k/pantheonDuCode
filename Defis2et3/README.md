@@ -1,11 +1,9 @@
 # Chifoumi et Plus ou moins et  Jeu de la vie  #Poc_1P
+---
 
+| <a href="https://poc.onepantheon.fr/html/defi.html"><img src="Chifoumi.png" width="200px" /></a> | <a href="https://poc.onepantheon.fr/html/defi.html"><img src="plusoumoins.png" width="200px" /></a> | <a href="https://poc.onepantheon.fr/html/defi.html"><img src="jeudelavie.png" width="200px" /></a> |
 
-<a href="https://poc.onepantheon.fr/html/defi.html"><img src="Chifoumi.png"  width="400px" /></a>
-<a href="https://poc.onepantheon.fr/html/defi.html"><img src="plusoumoins.png"  width="400px" /></a>
-<a href="https://poc.onepantheon.fr/html/defi.html"><img src="jeudelavie.png" width="400px" /></a>
-
-# installation 
+# Installation 
 
 - Cloner le repo
 
@@ -30,3 +28,4 @@ npm run dev
 
 ![img3.png](src/assets/img3.png)
 ![img_1.png](src/assets/img_1.png)
+![img.png](img.png)
