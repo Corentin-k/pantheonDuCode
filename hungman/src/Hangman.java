@@ -1,8 +1,5 @@
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.ResourceBundle;
-import java.util.Locale;
+import java.util.*;
 
 //https://jenkov.com/tutorials/java-internationalization/resourcebundle.html
 //https://www.tutorialspoint.com/java_i18n/java_i18n_resourcebundle.htm
@@ -14,7 +11,7 @@ public class Hangman {
     static int life = 10;
     static final int maxLife = 10;
     static StringBuilder guessedWord;
-    static ArrayList<Character> letterAlreadyUsed = new ArrayList<>();
+    static HashSet<Character> letterAlreadyUsed = new HashSet<>();
 
     public static String[] frenchWord={
             "chat","chien","ordinateur","voiture","maison","livre","école","jardin","table","soleil","lune",
