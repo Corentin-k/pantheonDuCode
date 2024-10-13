@@ -1,5 +1,9 @@
-# DEFIS 2 et 3
-##  Chifoumi et Plus ou moins 
+# Chifoumi et Plus ou moins et  Jeu de la vie  #Poc_1P
+
+
+<a href="https://poc.onepantheon.fr/html/defi.html"><img src="Chifoumi.png"  width="400px" /></a>
+<a href="https://poc.onepantheon.fr/html/defi.html"><img src="plusoumoins.png"  width="400px" /></a>
+<a href="https://poc.onepantheon.fr/html/defi.html"><img src="jeudelavie.png" width="400px" /></a>
 
 # installation 
 
@@ -20,6 +24,7 @@ npm i
 ```bash
 npm run dev
 ```
+
 
 ![img.png](src/assets/img.png)
 
