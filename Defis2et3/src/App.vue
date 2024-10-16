@@ -1,11 +1,11 @@
 <template class="home">
-  <div id="oneP" v-if="currentGame !== 'gamelife' && currentGameIndex.value !== 2">
+  <div id="oneP" v-if="(currentGame !== 'gamelife' && currentGame!=='echec' ) && currentGameIndex.value !== 2">
     <img src="./assets/logo.png" style="width:150px" alt="logo 1P">
     <h1>Panthéon du Code</h1>
   </div>
 
   <button id="prevButton" @click="prevGame" :disabled="currentGame === 'chifoumi'">⬅️ Précédent</button>
-  <button id="nextButton" @click="nextGame" :disabled="currentGame === 'gamelife'">Suivant ➡️</button>
+  <button id="nextButton" @click="nextGame" :disabled="currentGame === 'echec'">Suivant ➡️</button>
 
   <router-view></router-view>
 </template>
@@ -15,27 +15,27 @@ import { computed, ref } from 'vue';
 import { onBeforeMount } from 'vue';
 import router from './router/router.js'; // Importer le router
 
-const games = ['chifoumi', 'plusoumoins', 'gamelife']; // Liste des jeux
+const games = ['chifoumi', 'plusoumoins', 'gamelife','echec']; // Liste des jeux
 const currentGameIndex = ref(0); // Index du jeu courant
 const currentGame = computed(() => games[currentGameIndex.value]);
 
 function nextGame() {
   if (currentGameIndex.value < games.length - 1) {
     currentGameIndex.value++;
-    router.push(`/${currentGame.value}`); // Redirige vers la route du jeu suivant
+    router.push(`/${currentGame.value}`);
   }
 }
 
 function prevGame() {
   if (currentGameIndex.value > 0) {
     currentGameIndex.value--;
-    router.push(`/${currentGame.value}`); // Redirige vers la route du jeu précédent
+    router.push(`/${currentGame.value}`);
   }
 }
 
 
 router.afterEach((to) => {
-  const currentRouteName = to.name; // Récupère le nom de la route actuelle
+  const currentRouteName = to.name;
   console.log("Route actuelle:", currentRouteName);
 
   if (currentRouteName) {
