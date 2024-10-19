@@ -8,11 +8,11 @@ class Chess {
     move(start, end) {
         const piece = this.pieces[start];
         if (!piece) {
-            alert("error: Il n'y a pas de pièce à cet emplacement");
+            console.log("error: Il n'y a pas de pièce à cet emplacement");
             return;
         }
         if (piece.color !== this.turn) {
-            alert("error: Ce n'est pas votre tour");
+            console.log("error: Ce n'est pas votre tour");
             return;
         }
 
@@ -22,9 +22,11 @@ class Chess {
                 this.movePawn(piece, start, end);
                 break;
             case 'rook':
+                this.roque(piece, start, end);
                 this.moveRook(piece, start, end);
                 break;
             case 'king':
+                this.roque(piece, start, end);
                 this.moveKing(piece, start, end);
                 break;
             case 'bishop':
@@ -37,7 +39,7 @@ class Chess {
                 this.moveKnight(piece, start, end);
                 break;
             default:
-                alert("error: Type de pièce non supporté");
+                console.log("error: Type de pièce non supporté");
                 return;
         }
     }
@@ -55,7 +57,7 @@ class Chess {
                 this.updatePiecePosition(piece, start, end);
                 return;
             } else {
-                alert("error: Il y a une pièce sur le chemin ou à la destination");
+                console.log("error: Il y a une pièce sur le chemin ou à la destination");
                 return;
             }
         }
@@ -69,7 +71,7 @@ class Chess {
                     this.promotion(end);
                     return;
                 } else {
-                    alert("error: Vous ne pouvez pas capturer une pièce de la même couleur ou il n'y a pas de pièce à capturer");
+                    console.log("error: Vous ne pouvez pas capturer une pièce de la même couleur ou il n'y a pas de pièce à capturer");
                     return;
                 }
             }
@@ -78,14 +80,12 @@ class Chess {
             if (!this.pieces[end]) {
                 this.updatePiecePosition(piece, start, end);
                 this.promotion(end);
-                return;
             } else {
-                alert("error: La case de destination n'est pas vide");
-                return;
+                console.log("error: La case de destination n'est pas vide");
+
             }
         } else {
-            alert("error: Le pion ne peut pas se déplacer de cette façon");
-            return;
+            console.log("error: Le pion ne peut pas se déplacer de cette façon");
         }
     }
 
@@ -95,7 +95,7 @@ class Chess {
 
         // Vérifie si le mouvement est en ligne droite
         if (start[0] !== end[0] && start[1] !== end[1]) {
-            alert("error: La tour ne peut se déplacer que horizontalement ou verticalement");
+            console.log("error: La tour ne peut se déplacer que horizontalement ou verticalement");
             return;
         }
 
@@ -106,7 +106,7 @@ class Chess {
             let i = startRow + direction;
             while (i !== endRow) {
                 if (this.pieces[start[0] + i]) {
-                    alert("error: Il y a une pièce sur le chemin");
+                    console.log("error: Il y a une pièce sur le chemin");
                     return;
                 }
                 i += direction;
@@ -117,7 +117,7 @@ class Chess {
             let i = start[0].charCodeAt(0) + direction;
             while (i !== end[0].charCodeAt(0)) {
                 if (this.pieces[String.fromCharCode(i) + start[1]]) {
-                    alert("error: Il y a une pièce sur le chemin");
+                    console.log("error: Il y a une pièce sur le chemin");
                     return;
                 }
                 i += direction;
@@ -126,7 +126,7 @@ class Chess {
 
         // Vérifie la pièce à la destination
         if (this.pieces[end] && this.pieces[end].color === piece.color) {
-            alert("error: Vous ne pouvez pas capturer votre propre pièce");
+            console.log("error: Vous ne pouvez pas capturer votre propre pièce");
             return;
         }
 
@@ -138,12 +138,12 @@ class Chess {
         const endRow = parseInt(end[1]);
 
         if (Math.abs(startRow - endRow) > 1 || Math.abs(start[0].charCodeAt(0) - end[0].charCodeAt(0)) > 1) {
-            alert("error: Le roi ne peut bouger que d'une case dans n'importe quelle direction");
+            console.log("error: Le roi ne peut bouger que d'une case dans n'importe quelle direction");
             return;
         }
 
         if (this.pieces[end] && this.pieces[end].color === piece.color) {
-            alert("error: Vous ne pouvez pas capturer votre propre pièce");
+            console.log("error: Vous ne pouvez pas capturer votre propre pièce");
             return;
         }
 
@@ -152,12 +152,20 @@ class Chess {
 
     promotion(position) {
         const piece = this.pieces[position];
-        if (piece.type === 'pawn') {
-            const lastRow = piece.color === 'white' ? '1' : '8';
-            if (position[1] === lastRow) {
-                piece.type = 'queen'; // Promotion en reine
-            }
+        const lastRow = piece.color === 'white' ? '1' : '8';
+        if (position[1] === lastRow) {
+        const newType = prompt('Choose a piece to promote to: rook, knight, bishop, queen');
+
+        if (newType === 'rook' || newType === 'knight' || newType === 'bishop' || newType === 'queen') {
+            piece.type = newType;
         }
+        else {
+            console.log('error: Type de pièce non supporté');
+        }
+        }
+
+
+
     }
 
     updatePiecePosition(piece, start, end) {
@@ -176,7 +184,7 @@ class Chess {
 
         // pas en diagonale
         if (startRow===endRow || startCol===endCol) {
-            alert("error: Le fou ne peut se déplacer que en diagonale");
+            console.log("error: Le fou ne peut se déplacer que en diagonale");
             return;
         }
 
@@ -187,7 +195,7 @@ class Chess {
         let j = startCol + colDirection;
         while (i !== endRow) {
             if (this.pieces[String.fromCharCode(j) + i]) {
-                alert("error: Il y a une pièce sur le chemin");
+                console.log("error: Il y a une pièce sur le chemin");
                 return;
             }
             i += rowDirection;
@@ -196,7 +204,7 @@ class Chess {
 
         // Vérifie la pièce à la destination
         if (this.pieces[end] && this.pieces[end].color === piece.color) {
-            alert("error: Vous ne pouvez pas capturer votre propre pièce");
+            console.log("error: Vous ne pouvez pas capturer votre propre pièce");
             return;
         }
 
@@ -216,7 +224,7 @@ class Chess {
         const startCol = start[0].charCodeAt(0);
         const endCol = end[0].charCodeAt(0);
         if (this.pieces[end] && this.pieces[end].color === piece.color) {
-            alert("error: Vous ne pouvez pas capturer votre propre pièce");
+            console.log("error: Vous ne pouvez pas capturer votre propre pièce");
             return;
         }
         if (Math.abs(startRow - endRow) === 2 && Math.abs(startCol - endCol) === 1 ) {  // 2 cases en ligne droite et 1 case en diagonale
@@ -224,10 +232,69 @@ class Chess {
         } else if (Math.abs(startRow - endRow) === 1 && Math.abs(startCol - endCol) === 2 ) { // 1 case en ligne droite et 2 cases en diagonale
             this.updatePiecePosition(piece, start, end);
         } else {
-            alert("error: Le cavalier ne peut se déplacer que de deux cases dans une direction et une   case dans une direction perpendiculaire");
+            console.log("error: Le cavalier ne peut se déplacer que de deux cases dans une direction et une   case dans une direction perpendiculaire");
 
         }
     }
+    roque(piece, start, end) {
+        if (piece.type !== 'king') {
+            console.log("error: La pièce n'est pas un roi");
+            return;
+        }
+
+        const rook = this.pieces[end];
+        if (!rook || rook.type !== 'rook') {
+            console.log("error: La pièce à la destination n'est pas une tour");
+            return;
+        }
+
+        // Vérifier que ni le roi ni la tour n'ont déjà bougé
+        if (piece.hasMoved || rook.hasMoved) {
+            console.log("error: Le roi ou la tour a déjà bougé");
+            return;
+        }
+
+        // Vérifier si le roi et la tour sont de la même couleur
+        if (piece.color !== rook.color) {
+            console.log("error: Le roi et la tour ne sont pas de la même couleur");
+            return;
+        }
+
+        // Vérifier les cases entre le roi et la tour pour le grand roque
+        if (start[0] === 'E' && end[0] === 'A') {  // Grand roque (tour côté dame)
+            const emptySquares = piece.color === 'black' ? ['B1', 'C1', 'D1'] : ['B8', 'C8', 'D8'];
+            for (let square of emptySquares) {
+                if (this.pieces[square]) {
+                    console.log("error: Il y a une pièce entre le roi et la tour");
+                    return;
+                }
+            }
+            // Déplacer le roi et la tour
+            this.updatePiecePosition(piece, start, piece.color === 'black' ? 'C1' : 'C8');
+            this.updatePiecePosition(rook, end, piece.color === 'black' ? 'D1' : 'D8');
+        }
+        // Vérifier les cases entre le roi et la tour pour le petit roque
+        else if (start[0] === 'E' && end[0] === 'H') {  // Petit roque (tour côté roi)
+            const emptySquares = piece.color === 'black' ? ['F1', 'G1'] : ['F8', 'G8'];
+            for (let square of emptySquares) {
+                if (this.pieces[square]) {
+                    console.log("error: Il y a une pièce entre le roi et la tour");
+                    return;
+                }
+            }
+            // Déplacer le roi et la tour
+            this.updatePiecePosition(piece, start, piece.color === 'black' ? 'G1' : 'G8');
+            this.updatePiecePosition(rook, end, piece.color === 'black' ? 'F1' : 'F8');
+        } else {
+            console.log("error: Mouvement de roque non valide");
+        }
+
+        this.turn = this.turn === 'white' ? 'black' : 'white';
+
+    }
+
+
+
 
 }
 
