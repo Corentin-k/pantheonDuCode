@@ -70,12 +70,12 @@ let selectedPosition = ref(null);
 
 // Gérer les clics pour déplacer les pièces
 function handleMove(column, row) {
-  console.log('Move' ,column, row);
   const position = `${column}${row}`;
   if (!selectedPosition.value) {
     selectedPosition.value = position;
   } else {
     chess.move(selectedPosition.value, position);
+
     selectedPosition.value = null;
   }
 }

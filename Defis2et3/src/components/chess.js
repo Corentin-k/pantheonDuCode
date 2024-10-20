@@ -16,6 +16,11 @@ class Chess {
             return;
         }
 
+
+        // Essayer de simuler le mouvement
+        const originalPosition = { ...piece }; // Sauvegarder l'état original de la pièce
+        const originalEndPiece = this.pieces[end]; // Sauvegarder la pièce à la destination (s'il y en a une)
+
         // Gestion des différents types de pièces
         switch (piece.type) {
             case 'pawn':
@@ -39,9 +44,25 @@ class Chess {
                 this.moveKnight(piece, start, end);
                 break;
             default:
-                console.log("error: Type de pièce non supporté");
+
                 return;
         }
+        this.turn = this.turn === 'white' ? 'black' : 'white';
+        if (this.checkEchec(piece.color)) {
+            // Si le roi est en échec, annuler le mouvement
+
+            this.turn = this.turn === 'white' ? 'black' : 'white';
+            this.pieces[start] = originalPosition;
+            if (originalEndPiece) {
+                this.pieces[end] = originalEndPiece;
+            } else {
+                delete this.pieces[end];
+            }
+            alert("error: Mouvement non valide, le roi serait en échec");
+
+        }
+
+     
     }
 
     movePawn(piece, start, end) {
@@ -49,44 +70,54 @@ class Chess {
         const initialRow = piece.color === 'white' ? 7 : 2;
         const startRow = parseInt(start[1]);
         const endRow = parseInt(end[1]);
+        const startCol = start[0];
+        const endCol = end[0];
 
         // Mouvement initial (deux cases vers l'avant)
         if (!piece.hasMoved && endRow === startRow + 2 * direction && startRow === initialRow) {
-            const middleSquare = start[0] + (startRow + direction); // Case intermédiaire
-            if (!this.pieces[middleSquare] && !this.pieces[end]) {
+            const middleRow = startRow + direction;
+            const middleSquare = startCol + middleRow; // Case intermédiaire
+
+            // Vérifie que la case intermédiaire et la case de destination sont vides
+            if (startCol === endCol && !this.pieces[middleSquare] && !this.pieces[end]) {
                 this.updatePiecePosition(piece, start, end);
                 return;
             } else {
-                console.log("error: Il y a une pièce sur le chemin ou à la destination");
+                console.log("error: Il y a une pièce sur le chemin ou à la destination, ou mouvement latéral interdit");
                 return;
             }
         }
 
         // Mouvement normal (une case vers l'avant)
         if (endRow === startRow + direction) {
-            // Capture en diagonale
-            if (start[0] !== end[0]) {
-                if (this.pieces[end] && this.pieces[end].color !== piece.color) {
-                    this.updatePiecePosition(piece, start, end);
-                    this.promotion(end);
-                    return;
-                } else {
-                    console.log("error: Vous ne pouvez pas capturer une pièce de la même couleur ou il n'y a pas de pièce à capturer");
-                    return;
-                }
-            }
-
-            // Mouvement simple vers une case vide
-            if (!this.pieces[end]) {
+            // Mouvement simple vers une case vide (en ligne droite)
+            if (startCol === endCol && !this.pieces[end]) {
                 this.updatePiecePosition(piece, start, end);
-                this.promotion(end);
-            } else {
-                console.log("error: La case de destination n'est pas vide");
 
+                // Promotion si le pion atteint la dernière ligne
+                if (endRow === (piece.color === 'white' ? 1 : 8)) {
+                    this.promotion(end);
+                }
+                return;
             }
-        } else {
-            console.log("error: Le pion ne peut pas se déplacer de cette façon");
+
+            // Capture en diagonale
+            if (Math.abs(endCol.charCodeAt(0) - startCol.charCodeAt(0)) === 1 && this.pieces[end] && this.pieces[end].color !== piece.color) {
+                this.updatePiecePosition(piece, start, end);
+
+                // Promotion si le pion atteint la dernière ligne
+                if (endRow === (piece.color === 'white' ? 1 : 8)) {
+                    this.promotion(end);
+                }
+                return;
+            } else {
+                console.log("error: Mouvement latéral interdit sauf pour capturer ou pas de pièce à capturer");
+                return;
+            }
         }
+
+        // Si le mouvement ne correspond à aucun des cas valides
+        console.log("error: Le pion ne peut pas se déplacer de cette façon");
     }
 
     moveRook(piece, start, end) {
@@ -154,26 +185,24 @@ class Chess {
         const piece = this.pieces[position];
         const lastRow = piece.color === 'white' ? '1' : '8';
         if (position[1] === lastRow) {
-        const newType = prompt('Choose a piece to promote to: rook, knight, bishop, queen');
+            const newType = prompt('Choose a piece to promote to: rook, knight, bishop, queen');
 
-        if (newType === 'rook' || newType === 'knight' || newType === 'bishop' || newType === 'queen') {
-            piece.type = newType;
+            if (newType === 'rook' || newType === 'knight' || newType === 'bishop' || newType === 'queen') {
+                piece.type = newType;
+            } else {
+                console.log("error: Type de pièce non valide");
+                this.promotion(position);
+            }
         }
-        else {
-            console.log('error: Type de pièce non supporté');
-        }
-        }
-
-
-
     }
 
     updatePiecePosition(piece, start, end) {
-        piece.move();
+
         piece.hasMoved = true;
         this.pieces[end] = piece;
         delete this.pieces[start];
-        this.turn = this.turn === 'white' ? 'black' : 'white';
+
+        this.checkEchec(this.turn === 'white' ? 'black' : 'white');
     }
 
     moveBishop(piece, start, end) {
@@ -183,7 +212,7 @@ class Chess {
         const endCol = end[0].charCodeAt(0);// Colonne d'arrivée
 
         // pas en diagonale
-        if (startRow===endRow || startCol===endCol) {
+        if (startRow === endRow || startCol === endCol) {
             console.log("error: Le fou ne peut se déplacer que en diagonale");
             return;
         }
@@ -212,10 +241,10 @@ class Chess {
     }
 
     moveQueen(piece, start, end) {
-        // meme mv que le fou ou la tour
-        this.moveBishop(piece, start, end);
-        this.moveRook(piece, start, end);
-
+        if (this.moveBishop(piece, start, end) || this.moveRook(piece, start, end)) {
+            return;
+        }
+        console.log("error: Mouvement non valide pour la reine");
     }
 
     moveKnight(piece, start, end) {
@@ -227,15 +256,15 @@ class Chess {
             console.log("error: Vous ne pouvez pas capturer votre propre pièce");
             return;
         }
-        if (Math.abs(startRow - endRow) === 2 && Math.abs(startCol - endCol) === 1 ) {  // 2 cases en ligne droite et 1 case en diagonale
+        if (Math.abs(startRow - endRow) === 2 && Math.abs(startCol - endCol) === 1) {  // 2 cases en ligne droite et 1 case en diagonale
             this.updatePiecePosition(piece, start, end);
-        } else if (Math.abs(startRow - endRow) === 1 && Math.abs(startCol - endCol) === 2 ) { // 1 case en ligne droite et 2 cases en diagonale
+        } else if (Math.abs(startRow - endRow) === 1 && Math.abs(startCol - endCol) === 2) { // 1 case en ligne droite et 2 cases en diagonale
             this.updatePiecePosition(piece, start, end);
         } else {
-            console.log("error: Le cavalier ne peut se déplacer que de deux cases dans une direction et une   case dans une direction perpendiculaire");
-
+            console.log("error: Le cavalier ne peut se déplacer que de deux cases dans une direction et une case dans une direction perpendiculaire");
         }
     }
+
     roque(piece, start, end) {
         if (piece.type !== 'king') {
             console.log("error: La pièce n'est pas un roi");
@@ -290,12 +319,136 @@ class Chess {
         }
 
         this.turn = this.turn === 'white' ? 'black' : 'white';
-
     }
 
+    checkEchec(color) {
+        const kingPosition = this.findKingPosition(color);
+        if (!kingPosition) {
+            console.error('Roi introuvable pour la couleur :', color);
+            return false;
+        }
 
+        for (let position in this.pieces) {
+            const piece = this.pieces[position];
+            if (piece.color !== color) {
+                if (this.isThreateningKing(piece, position, kingPosition)) {
+                    this.pieces[kingPosition].isInCheck = true;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
+    isThreateningKing(piece, position, kingPosition) {
+        switch (piece.type) {
+            case 'pawn':
+                return this.checkPawnEchec(piece, position, kingPosition);
+            case 'rook':
+                return this.checkRookEchec(piece, position, kingPosition);
+            case 'king':
+                return this.checkKingEchec(piece, position, kingPosition);
+            case 'bishop':
+                return this.checkBishopEchec(piece, position, kingPosition);
+            case 'queen':
+                return this.checkQueenEchec(piece, position, kingPosition);
+            case 'knight':
+                return this.checkKnightEchec(piece, position, kingPosition);
+            default:
+                return false;
+        }
+    }
 
+    checkPawnEchec(piece, position, kingPosition) {
+        const row = parseInt(position[1]);
+        const col = position[0].charCodeAt(0);
+        const kingRow = parseInt(kingPosition[1]);
+        const kingCol = kingPosition[0].charCodeAt(0);
+
+        return Math.abs(row - kingRow) === 1 && Math.abs(col - kingCol) === 1;
+    }
+
+    checkRookEchec(piece, position, kingPosition) {
+        const row = parseInt(position[1]);
+        const col = position[0].charCodeAt(0);
+        const kingRow = parseInt(kingPosition[1]);
+        const kingCol = kingPosition[0].charCodeAt(0);
+
+        if (row === kingRow) {
+            const colDirection = kingCol > col ? 1 : -1;
+            for (let i = col + colDirection; i !== kingCol; i += colDirection) {
+                if (this.pieces[String.fromCharCode(i) + row]) {
+                    return false;
+                }
+            }
+            return true;
+        } else if (col === kingCol) {
+            const rowDirection = kingRow > row ? 1 : -1;
+            for (let i = row + rowDirection; i !== kingRow; i += rowDirection) {
+                if (this.pieces[String.fromCharCode(col) + i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    checkKingEchec(piece, position, kingPosition) {
+        const row = parseInt(position[1]);
+        const col = position[0].charCodeAt(0);
+        const kingRow = parseInt(kingPosition[1]);
+        const kingCol = kingPosition[0].charCodeAt(0);
+
+        return Math.abs(row - kingRow) <= 1 && Math.abs(col - kingCol) <= 1;
+    }
+
+    checkBishopEchec(piece, position, kingPosition) {
+        const row = parseInt(position[1]);
+        const col = position[0].charCodeAt(0);
+        const kingRow = parseInt(kingPosition[1]);
+        const kingCol = kingPosition[0].charCodeAt(0);
+
+        if (Math.abs(row - kingRow) === Math.abs(col - kingCol)) {
+            const rowDirection = kingRow > row ? 1 : -1;
+            const colDirection = kingCol > col ? 1 : -1;
+            let i = row + rowDirection;
+            let j = col + colDirection;
+            while (i !== kingRow && j !== kingCol) {
+                if (this.pieces[String.fromCharCode(j) + i]) {
+                    return false;
+                }
+                i += rowDirection;
+                j += colDirection;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    checkQueenEchec(piece, position, kingPosition) {
+        return this.checkBishopEchec(piece, position, kingPosition) || this.checkRookEchec(piece, position, kingPosition);
+    }
+
+    checkKnightEchec(piece, position, kingPosition) {
+        const row = parseInt(position[1]);
+        const col = position[0].charCodeAt(0);
+        const kingRow = parseInt(kingPosition[1]);
+        const kingCol = kingPosition[0].charCodeAt(0);
+
+        return (Math.abs(row - kingRow) === 2 && Math.abs(col - kingCol) === 1) ||
+            (Math.abs(row - kingRow) === 1 && Math.abs(col - kingCol) === 2);
+    }
+
+    findKingPosition(color) {
+        for (let position in this.pieces) {
+            const piece = this.pieces[position];
+            if (piece.type === 'king' && piece.color === color) {
+                return position;
+            }
+        }
+        return null;
+    }
 }
 
 export default Chess;
