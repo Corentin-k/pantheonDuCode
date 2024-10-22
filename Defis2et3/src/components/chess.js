@@ -263,8 +263,6 @@ class Chess {
             this.updatePiecePosition(piece, start, end);
         } else {
             this.turn = this.turn === 'white' ? 'black' : 'white';
-            console.log("error: Le cavalier ne peut se déplacer que de deux cases dans une direction et une case dans une direction perpendiculaire");
-
         }
     }
 
@@ -280,7 +278,6 @@ class Chess {
 
         // Vérifier que ni le roi ni la tour n'ont déjà bougé
         if (piece.hasMoved || rook.hasMoved) {
-            console.log("error: Le roi ou la tour a déjà bougé");
             return;
         }
 
