@@ -509,10 +509,9 @@ class Chess {
 
         for (let position in this.pieces) {
             const piece = this.pieces[position];
-            console.log("Vérification de la pièce à la position :", position);
 
             if (piece.color !== color) {
-                continue; // Ne vérifier que les pièces du joueur en cours
+                continue;
             }
 
             const possibleMoves = [
@@ -527,30 +526,30 @@ class Chess {
             ];
 
             for (let move of possibleMoves) {
-                // Sauvegarde manuelle des états avant le mouvement
-                const originalPosition = { ...this.pieces[position] }; // Copie la pièce à la position initiale
-                const originalEndPiece = this.pieces[move] ? { ...this.pieces[move] } : null; // Copie la pièce à la position cible (s'il y en a une)
+
+                const originalPosition = { ...this.pieces[position] };
+                const originalEndPiece = this.pieces[move] ? { ...this.pieces[move] } : null;
 
                 console.log('Essai de mouvement de', position, 'à', move);
 
                 // Simuler le mouvement
-                this.move(position, move); // Cette méthode modifie l'état du plateau
-                this.turn = color; // Restaurer le tour du joueur, si nécessaire
+                this.move(position, move);
+                this.turn = color;
 
-                // Vérifier si le roi est toujours en échec après ce mouvement
+
                 if (!this.checkEchec(color)) {
-                    // Mouvement valide trouvé, annuler les modifications pour le moment
+
                     this.pieces[position] = originalPosition;
                     if (originalEndPiece) {
                         this.pieces[move] = originalEndPiece;
                     } else {
-                        delete this.pieces[move]; // Si la case cible était vide avant, on la vide à nouveau
+                        delete this.pieces[move];
                     }
                     console.log('Mouvement valide trouvé de', position, 'à', move);
-                    return false; // Un mouvement légal qui sauve le roi a été trouvé, donc pas d'échec et mat
+                    return false;
                 }
 
-                // Si le mouvement ne protège pas le roi, restaurer l'état initial
+
                 this.pieces[position] = originalPosition;
                 if (originalEndPiece) {
                     this.pieces[move] = originalEndPiece;
@@ -560,7 +559,7 @@ class Chess {
             }
         }
 
-        return true; // Aucun mouvement légal ne peut sauver le roi, donc échec et mat
+        return true;
     }
 
 
