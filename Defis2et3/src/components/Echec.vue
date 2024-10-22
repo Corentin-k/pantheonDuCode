@@ -8,12 +8,18 @@
     <div v-for="(row, rowIndex) in 8" :key="rowIndex" class="rowGrid">
       <div class="name">{{ 8 - rowIndex }}</div>
       <div v-for="(col, colIndex) in 8" :key="colIndex"
-           class=""
-           :class="{'case':true, 'caseBlack': (rowIndex + colIndex) % 2 !== 0}"
+           :class="{
+             'case': true,
+             'caseBlack': (rowIndex + colIndex) % 2 !== 0,
+             'selected': selectedPosition && selectedPosition === letters[colIndex] + (8 - rowIndex),
+              'in-check': isKingInCheck(letters[colIndex], 8 - rowIndex)
+      }"
            @click="handleMove(letters[colIndex], 8 - rowIndex)">
         <div class="piece">
           {{ getPieceSymbol(pieces[letters[colIndex] + (8 - rowIndex)]) }}
-        </div></div>
+        </div>
+      </div>
+
       <div class="name">{{ 8 - rowIndex }}</div>
     </div>
 
@@ -23,6 +29,8 @@
     </div>
   </div>
 </template>
+
+
 
 <script setup>
 import { reactive, ref } from 'vue';
@@ -75,6 +83,14 @@ function handleMove(column, row) {
     selectedPosition.value = position;
   } else {
     chess.move(selectedPosition.value, position);
+    if (chess.echecEtMat()) {
+
+      alert("Échec et Mat : Le roi a été capturé !");
+      // Ajoutez ici la logique pour gérer la fin du jeu (ex. afficher un message)
+    }
+    else {
+      console.log("Le roi n'est pas en échec et mat")
+    }
 
     selectedPosition.value = null;
   }
@@ -92,7 +108,20 @@ function getPieceSymbol(piece) {
   };
   return symbols[piece.type][piece.color];
 }
+function isKingInCheck(column, row) {
+  const position = `${column}${row}`;
+  const piece = pieces[position];
+
+  // Vérifie si c'est un roi et s'il est en échec
+  if (piece && piece.type === 'king') {
+
+    return piece.isInCheck;
+  }
+  return false;
+}
+
 </script>
+
 
 
 <style scoped>
@@ -128,4 +157,13 @@ function getPieceSymbol(piece) {
   font-size: 50px;
   cursor: pointer;
 }
+.selected {
+  background-color: #ffd700; /* Jaune doré pour indiquer la sélection */
+  border: 2px solid #ff8c00; /* Un bord orange plus épais pour indiquer la sélection */
+  color: #de1b1b; /* Texte noir pour une meilleure lisibilité */
+}
+.in-check {
+  background-color: red;  /* Changer la couleur de fond du roi en échec */
+}
+
 </style>
