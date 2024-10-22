@@ -8,15 +8,12 @@ class Chess {
     move(start, end) {
         const piece = this.pieces[start];
         if (!piece) {
-            console.log("error: Il n'y a pas de pièce à cet emplacement");
             return;
         }
         if (piece.color !== this.turn) {
-            console.log("error: Ce n'est pas votre tour");
             return;
         }
         if(start===end){
-            console.log("error: Vous devez bouger la pièce");
             return;
         }
 
@@ -61,23 +58,11 @@ class Chess {
             } else {
                 delete this.pieces[end];
             }
-            console.log("error: Mouvement non valide, le roi serait en échec");
-            // changer l'etat du roi en inCheck=false
-
-
         }
 
         if (!this.checkEchec(piece.color)) {
-            // Si le roi n'est plus en échec, réinitialiser isInCheck
             this.pieces[this.findKingPosition(piece.color)].isInCheck = false;
         }
-// // Vérifiez si c'est un pat ou un échec et mat
-//         if (this.pat()) {
-//
-//             console.log("La partie est terminée par un pat.")
-//             // Ajoutez ici la logique pour gérer la fin du jeu (ex. afficher un message)
-//         } else
-
     }
 
     movePawn(piece, start, end) {
@@ -98,7 +83,7 @@ class Chess {
                 this.updatePiecePosition(piece, start, end);
                 return;
             } else {
-                console.log("error: Il y a une pièce sur le chemin ou à la destination, ou mouvement latéral interdit");
+
                 return;
             }
         }
@@ -126,14 +111,10 @@ class Chess {
                 }
                 return;
             } else {
-                console.log("error: Mouvement latéral interdit sauf pour capturer ou pas de pièce à capturer");
                 this.turn = this.turn === 'white' ? 'black' : 'white';
                 return;
             }
         }
-
-        // Si le mouvement ne correspond à aucun des cas valides
-        console.log("error: Le pion ne peut pas se déplacer de cette façon");
         this.turn = this.turn === 'white' ? 'black' : 'white';
     }
 
@@ -143,7 +124,6 @@ class Chess {
 
         // Vérifie si le mouvement est en ligne droite
         if (start[0] !== end[0] && start[1] !== end[1]) {
-            console.log("error: La tour ne peut se déplacer que horizontalement ou verticalement");
             this.turn = this.turn === 'white' ? 'black' : 'white';
             return;
         }
@@ -155,7 +135,6 @@ class Chess {
             let i = startRow + direction;
             while (i !== endRow) {
                 if (this.pieces[start[0] + i]) {
-                    console.log("error: Il y a une pièce sur le chemin");
                     this.turn = this.turn === 'white' ? 'black' : 'white';
                     return;
                 }
@@ -167,7 +146,6 @@ class Chess {
             let i = start[0].charCodeAt(0) + direction;
             while (i !== end[0].charCodeAt(0)) {
                 if (this.pieces[String.fromCharCode(i) + start[1]]) {
-                    console.log("error: Il y a une pièce sur le chemin");
                     this.turn = this.turn === 'white' ? 'black' : 'white';
                     return;
                 }
@@ -177,7 +155,6 @@ class Chess {
 
         // Vérifie la pièce à la destination
         if (this.pieces[end] && this.pieces[end].color === piece.color) {
-            console.log("error: Vous ne pouvez pas capturer votre propre pièce");
             this.turn = this.turn === 'white' ? 'black' : 'white';
             return;
         }
@@ -190,13 +167,11 @@ class Chess {
         const endRow = parseInt(end[1]);
 
         if (Math.abs(startRow - endRow) > 1 || Math.abs(start[0].charCodeAt(0) - end[0].charCodeAt(0)) > 1) {
-            console.log("error: Le roi ne peut bouger que d'une case dans n'importe quelle direction");
             this.turn = this.turn === 'white' ? 'black' : 'white';
             return;
         }
 
         if (this.pieces[end] && this.pieces[end].color === piece.color) {
-            console.log("error: Vous ne pouvez pas capturer votre propre pièce");
             this.turn = this.turn === 'white' ? 'black' : 'white';
 
              return;
@@ -214,7 +189,6 @@ class Chess {
             if (newType === 'rook' || newType === 'knight' || newType === 'bishop' || newType === 'queen') {
                 piece.type = newType;
             } else {
-                console.log("error: Type de pièce non valide");
                 this.promotion(position);
             }
         }
@@ -225,7 +199,6 @@ class Chess {
         piece.hasMoved = true;
         this.pieces[end] = piece;
         delete this.pieces[start];
-
         this.checkEchec(this.turn === 'white' ? 'black' : 'white');
     }
 
@@ -237,7 +210,6 @@ class Chess {
 
         // Vérifie si le mouvement est bien diagonal
         if (Math.abs(endRow - startRow) !== Math.abs(endCol - startCol)) {
-            console.log("error: Le fou ne peut se déplacer que en diagonale");
             this.turn = this.turn === 'white' ? 'black' : 'white';
             return;
         }
@@ -251,7 +223,6 @@ class Chess {
         // Vérifie qu'il n'y a pas de pièces sur le chemin
         while (i !== endRow && j !== endCol) {
             if (this.pieces[String.fromCharCode(j) + i]) {
-                console.log("error: Il y a une pièce sur le chemin");
                 this.turn = this.turn === 'white' ? 'black' : 'white';
                 return;
             }
@@ -261,7 +232,6 @@ class Chess {
 
         // Vérifie la pièce à la destination
         if (this.pieces[end] && this.pieces[end].color === piece.color) {
-            console.log("error: Vous ne pouvez pas capturer votre propre pièce");
             this.turn = this.turn === 'white' ? 'black' : 'white';
             return;
         }
@@ -276,7 +246,6 @@ class Chess {
             return;
         }
         this.turn = this.turn === 'white' ? 'black' : 'white';
-        console.log("error: Mouvement non valide pour la reine");
     }
 
     moveKnight(piece, start, end) {
@@ -285,7 +254,6 @@ class Chess {
         const startCol = start[0].charCodeAt(0);
         const endCol = end[0].charCodeAt(0);
         if (this.pieces[end] && this.pieces[end].color === piece.color) {
-            console.log("error: Vous ne pouvez pas capturer votre propre pièce");
             this.turn = this.turn === 'white' ? 'black' : 'white';
             return;
         }
@@ -302,13 +270,11 @@ class Chess {
 
     roque(piece, start, end) {
         if (piece.type !== 'king') {
-            console.log("error: La pièce n'est pas un roi");
             return;
         }
 
         const rook = this.pieces[end];
         if (!rook || rook.type !== 'rook') {
-            console.log("error: La pièce à la destination n'est pas une tour");
             return;
         }
 
@@ -320,7 +286,6 @@ class Chess {
 
         // Vérifier si le roi et la tour sont de la même couleur
         if (piece.color !== rook.color) {
-            console.log("error: Le roi et la tour ne sont pas de la même couleur");
             return;
         }
 
@@ -329,7 +294,6 @@ class Chess {
             const emptySquares = piece.color === 'black' ? ['B1', 'C1', 'D1'] : ['B8', 'C8', 'D8'];
             for (let square of emptySquares) {
                 if (this.pieces[square]) {
-                    console.log("error: Il y a une pièce entre le roi et la tour");
                     return;
                 }
             }
@@ -342,15 +306,12 @@ class Chess {
             const emptySquares = piece.color === 'black' ? ['F1', 'G1'] : ['F8', 'G8'];
             for (let square of emptySquares) {
                 if (this.pieces[square]) {
-                    console.log("error: Il y a une pièce entre le roi et la tour");
                     return;
                 }
             }
             // Déplacer le roi et la tour
             this.updatePiecePosition(piece, start, piece.color === 'black' ? 'G1' : 'G8');
             this.updatePiecePosition(rook, end, piece.color === 'black' ? 'F1' : 'F8');
-        } else {
-            console.log("error: Mouvement de roque non valide");
         }
 
         this.turn = this.turn === 'white' ? 'black' : 'white';
@@ -359,7 +320,6 @@ class Chess {
     checkEchec(color) {
         const kingPosition = this.findKingPosition(color);
         if (!kingPosition) {
-            console.error('Roi introuvable pour la couleur :', color);
             return false;
         }
 
@@ -493,19 +453,14 @@ class Chess {
     echecEtMat() {
         const kingPosition = this.findKingPosition(this.turn);
         if (!kingPosition) {
-            console.error('Roi introuvable pour la couleur :', this.turn);
             return false;
         }
 
         // Vérifier si le roi est en échec
         if (!this.checkEchec(this.turn)) {
-            return false; // Le roi n'est pas en échec, donc pas d'échec et mat
+            return false;
         }
-
         let color = this.turn;
-
-        // Parcourir toutes les pièces du joueur actuel
-        console.log("pieces", this.pieces);
 
         for (let position in this.pieces) {
             const piece = this.pieces[position];
@@ -529,8 +484,6 @@ class Chess {
 
                 const originalPosition = { ...this.pieces[position] };
                 const originalEndPiece = this.pieces[move] ? { ...this.pieces[move] } : null;
-
-                console.log('Essai de mouvement de', position, 'à', move);
 
                 // Simuler le mouvement
                 this.move(position, move);
@@ -562,7 +515,44 @@ class Chess {
         return true;
     }
 
+    pat() {
+        const color = this.turn;
+        for (let position in this.pieces) {
+            const piece = this.pieces[position];
+            if (piece.color === color) {
+                const moves= [
+                    'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8',
+                    'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8',
+                    'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8',
+                    'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8',
+                    'E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8',
+                    'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8',
+                    'G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8',
+                    'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7', 'H8'
+                ];
+                for (let move of moves) {
+                    const originalPosition = { ...piece };
+                    const originalEndPiece = this.pieces[move];
+                    this.move(position, move);
+                    this.turn = color;
+                    // Si la tableau apres le mouvement et n'est pas comme avant le mouvement alors un pion peut encore bouger et donc pas de pat
+                    if(originalPosition !== this.pieces[position] && originalEndPiece !== this.pieces[move]){
+                        this.pieces[position] = originalPosition;
+                        if (originalEndPiece) {
+                            this.pieces[move] = originalEndPiece;
+                        } else {
+                            delete this.pieces[move];
+                        }
+                        console.log('Mouvement valide trouvé de', position, 'à', move);
+                        return false;
+                    }
 
+
+                }
+            }
+        }
+        return true;
+    }
 
 
 }

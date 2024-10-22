@@ -39,42 +39,43 @@ import Piece from "./Piece.js";
 
 const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 const pieces = reactive({
-  // A1: new Piece('rook', 'black'),
-  // A2: new Piece('pawn', 'black'),
-  // B1: new Piece('knight', 'black'),
-  // B2: new Piece('pawn', 'black'),
-  // C1: new Piece('bishop', 'black'),
-  // C2: new Piece('pawn', 'black'),
-  // D1: new Piece('queen', 'black'),
-  // D2: new Piece('pawn', 'black'),
-  // E1: new Piece('king', 'black'),
-  // E2: new Piece('pawn', 'black'),
-  // F1: new Piece('bishop', 'black'),
-  // F2: new Piece('pawn', 'black'),
-  // G1: new Piece('knight', 'black'),
-  // G2: new Piece('pawn', 'black'),
-  // H1: new Piece('rook', 'black'),
-  // H2: new Piece('pawn', 'black'),
+  A1: new Piece('rook', 'black'),
+  A2: new Piece('pawn', 'black'),
+  B1: new Piece('knight', 'black'),
+  B2: new Piece('pawn', 'black'),
+  C1: new Piece('bishop', 'black'),
+  C2: new Piece('pawn', 'black'),
+  D1: new Piece('queen', 'black'),
+  D2: new Piece('pawn', 'black'),
+  E1: new Piece('king', 'black'),
+  E2: new Piece('pawn', 'black'),
+  F1: new Piece('bishop', 'black'),
+  F2: new Piece('pawn', 'black'),
+  G1: new Piece('knight', 'black'),
+  G2: new Piece('pawn', 'black'),
+  H1: new Piece('rook', 'black'),
+  H2: new Piece('pawn', 'black'),
 
-  // A7: new Piece('pawn', 'white'),
-  // A8: new Piece('rook', 'white'),
-  // B7: new Piece('pawn', 'white'),
-  // B8: new Piece('knight', 'white'),
-  // C7: new Piece('pawn', 'white'),
-  // C8: new Piece('bishop', 'white'),
-  // D7: new Piece('pawn', 'white'),
-  // D8: new Piece('queen', 'white'),
-  // E7: new Piece('pawn', 'white'),
-  // E8: new Piece('king', 'white'),
-  // F7: new Piece('pawn', 'white'),
-  // F8: new Piece('bishop', 'white'),
-  // G7: new Piece('pawn', 'white'),
-  // G8: new Piece('knight', 'white'),
-  // H7: new Piece('pawn', 'white'),
-  // H8: new Piece('rook', 'white'),
-  A5: new Piece('queen', 'black'),
-  E6: new Piece('king', 'black'),
-  A1: new Piece('king', 'white'),
+  A7: new Piece('pawn', 'white'),
+  A8: new Piece('rook', 'white'),
+  B7: new Piece('pawn', 'white'),
+  B8: new Piece('knight', 'white'),
+  C7: new Piece('pawn', 'white'),
+  C8: new Piece('bishop', 'white'),
+  D7: new Piece('pawn', 'white'),
+  D8: new Piece('queen', 'white'),
+  E7: new Piece('pawn', 'white'),
+  E8: new Piece('king', 'white'),
+  F7: new Piece('pawn', 'white'),
+  F8: new Piece('bishop', 'white'),
+  G7: new Piece('pawn', 'white'),
+  G8: new Piece('knight', 'white'),
+  H7: new Piece('pawn', 'white'),
+  H8: new Piece('rook', 'white'),
+  //Simulation pat :
+  // A5: new Piece('queen', 'black'),
+  // E6: new Piece('king', 'black'),
+  // A1: new Piece('king', 'white'),
 
 });
 const chess = new Chess(pieces);
@@ -92,7 +93,12 @@ function handleMove(column, row) {
     else {
       console.log("Le roi n'est pas en échec et mat")
     }
-
+    if(chess.pat()){
+      alert("Pat : Le roi n'est pas en échec mais ne peut pas bouger");
+    }
+    else {
+      console.log("Le roi n'est pas en pat")
+    }
     selectedPosition.value = null;
   }
 }
@@ -113,7 +119,6 @@ function isKingInCheck(column, row) {
   const position = `${column}${row}`;
   const piece = pieces[position];
 
-  // Vérifie si c'est un roi et s'il est en échec
   if (piece && piece.type === 'king') {
 
     return piece.isInCheck;
@@ -159,12 +164,11 @@ function isKingInCheck(column, row) {
   cursor: pointer;
 }
 .selected {
-  background-color: #ffd700; /* Jaune doré pour indiquer la sélection */
-  border: 2px solid #ff8c00; /* Un bord orange plus épais pour indiquer la sélection */
-  color: #de1b1b; /* Texte noir pour une meilleure lisibilité */
+  background-color: #ffd700;
+  border: 2px solid #ff8c00;
 }
 .in-check {
-  background-color: red;  /* Changer la couleur de fond du roi en échec */
+  background-color: red;
 }
 
 </style>
