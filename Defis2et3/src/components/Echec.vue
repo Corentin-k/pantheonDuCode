@@ -40,6 +40,7 @@
 import { reactive, ref } from 'vue';
 import Chess from './chess.js';
 import Piece from "./Piece.js";
+import router from "../router/router.js";
 
 const startGame= ref(true)
 const endMessage = ref("");
@@ -125,55 +126,11 @@ function isKingInCheck(column, row) {
   const position = `${column}${row}`;
   const piece = pieces[position];
 
-  if (piece && piece.type === 'king') {
+  return !!(piece && piece.type === 'king' && piece.isInCheck);
 
-    return piece.isInCheck;
-  }
-  return false;
 }
 function restartGame() {
-  for (const key in pieces) {
-    pieces[key] = null;
-  }
-  Object.assign(pieces, {
-    A1: new Piece('rook', 'black'),
-    A2: new Piece('pawn', 'black'),
-    B1: new Piece('knight', 'black'),
-    B2: new Piece('pawn', 'black'),
-    C1: new Piece('bishop', 'black'),
-    C2: new Piece('pawn', 'black'),
-    D1: new Piece('queen', 'black'),
-    D2: new Piece('pawn', 'black'),
-    E1: new Piece('king', 'black'),
-    E2: new Piece('pawn', 'black'),
-    F1: new Piece('bishop', 'black'),
-    F2: new Piece('pawn', 'black'),
-    G1: new Piece('knight', 'black'),
-    G2: new Piece('pawn', 'black'),
-    H1: new Piece('rook', 'black'),
-    H2: new Piece('pawn', 'black'),
-
-    A7: new Piece('pawn', 'white'),
-    A8: new Piece('rook', 'white'),
-    B7: new Piece('pawn', 'white'),
-    B8: new Piece('knight', 'white'),
-    C7: new Piece('pawn', 'white'),
-    C8: new Piece('bishop', 'white'),
-    D7: new Piece('pawn', 'white'),
-    D8: new Piece('queen', 'white'),
-    E7: new Piece('pawn', 'white'),
-    E8: new Piece('king', 'white'),
-    F7: new Piece('pawn', 'white'),
-    F8: new Piece('bishop', 'white'),
-    G7: new Piece('pawn', 'white'),
-    G8: new Piece('knight', 'white'),
-    H7: new Piece('pawn', 'white'),
-    H8: new Piece('rook', 'white'),
-  });
-
-  startGame.value = true;
-  selectedPosition.value = null;
-  endMessage.value = '';
+  location.reload()
 }
 </script>
 
