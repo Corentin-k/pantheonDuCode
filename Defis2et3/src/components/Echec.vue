@@ -124,12 +124,12 @@ function getPieceSymbol(piece) {
 function isKingInCheck(column, row) {
   const position = `${column}${row}`;
   const piece = pieces[position];
-  if( piece&& piece.type === 'king' ){
-    chess.checkEchec(chess.turn);
-    return piece.isInCheck;
+
+  if (piece && piece.type === 'king') {
+
+    return chess.checkEchec(piece.color);
   }
   return false;
-
 }
 function restartGame() {
   location.reload()
