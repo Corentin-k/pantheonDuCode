@@ -40,7 +40,6 @@
 import { reactive, ref } from 'vue';
 import Chess from './chess.js';
 import Piece from "./Piece.js";
-import router from "../router/router.js";
 
 const startGame= ref(true)
 const endMessage = ref("");
@@ -125,8 +124,11 @@ function getPieceSymbol(piece) {
 function isKingInCheck(column, row) {
   const position = `${column}${row}`;
   const piece = pieces[position];
-
-  return !!(piece && piece.type === 'king' && piece.isInCheck);
+  if( piece&& piece.type === 'king' ){
+    chess.checkEchec(chess.turn);
+    return piece.isInCheck;
+  }
+  return false;
 
 }
 function restartGame() {
