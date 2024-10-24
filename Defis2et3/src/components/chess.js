@@ -83,7 +83,7 @@ class Chess {
                 this.updatePiecePosition(piece, start, end);
                 return;
             } else {
-
+                this.turn = this.turn === 'white' ? 'black' : 'white';
                 return;
             }
         }
@@ -109,6 +109,7 @@ class Chess {
                 if (endRow === (piece.color === 'white' ? 1 : 8)) {
                     this.promotion(end);
                 }
+
                 return;
             } else {
                 this.turn = this.turn === 'white' ? 'black' : 'white';
