@@ -1,7 +1,7 @@
 # Chifoumi et Plus ou moins et  Jeu de la vie  #Poc_1P
 ---
 
-| <a href="https://poc.onepantheon.fr/html/defi.html"><img src="Chifoumi.png" width="200px" /></a> | <a href="https://poc.onepantheon.fr/html/defi.html"><img src="plusoumoins.png" width="200px" /></a> | <a href="https://poc.onepantheon.fr/html/defi.html"><img src="jeudelavie.png" width="200px" /></a> |
+| <a href="https://poc.onepantheon.fr/html/defi.html"><img src="./public/Chifoumi.png" width="200px" /></a> | <a href="https://poc.onepantheon.fr/html/defi.html"><img src="./public/plusoumoins.png" width="200px" /></a> | <a href="https://poc.onepantheon.fr/html/defi.html"><img src="./public/jeudelavie.png" width="200px" /></a> |<a href="https://poc.onepantheon.fr/html/defi.html"><img src="./public/echecdefis.png" width="200px" /></a>
 
 # Installation 
 
@@ -23,9 +23,12 @@ npm i
 npm run dev
 ```
 
+---
 
 ![img.png](src/assets/img.png)
 
 ![img3.png](src/assets/img3.png)
 ![img_1.png](src/assets/img_1.png)
-![img.png](img.png)
+![img.png](public/img.png)
+
+![img_1.png](public/img_1.png)
