@@ -6,7 +6,7 @@
 
 # Description
 
-Jeu de Tic Tac Toe en Assembleur
+Jeu de Tic Tac Toe en Assembleur x86_64
 
 Subtilité : Les postions sont entre 0 et 8 de cette façon :
 
@@ -40,4 +40,3 @@ ld -o tictactoe tictactoe.o
 
 https://www.linuxassembly.org/startup.html
 https://www.youtube.com/watch?v=BWRR3Hecjao
-https://chatgpt.com/share/671d1f49-3e8c-800b-bee6-434c0fc77baa
